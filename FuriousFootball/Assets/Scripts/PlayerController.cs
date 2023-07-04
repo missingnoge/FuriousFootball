@@ -1,7 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using UnityEngine.InputSystem;
 
 public class PlayerController : MonoBehaviour
 {
@@ -9,21 +8,25 @@ public class PlayerController : MonoBehaviour
 
     public float baseSpeed;
     public float speed;
-    private Vector2 move;
+
+    public float stamina = 2f;
+    private float stamTimer = 0f;
+    public float stamTimerGoal = 360f;
+
+    [SerializeField]
+    private KeyCode charge = KeyCode.F;
 
     public bool charging = false;
-    private float chargeSpdMod = 1.50f;
+    [SerializeField] private float chargeSpdMod = 4f;
+    [SerializeField] private float chargeTimerGoal = 40f;
     private float chargeTimer = 0f;
-    private float chargeTimerGoal = 30f;
 
-    public void onMove(InputAction.CallbackContext context)
-    {
-        move = context.ReadValue<Vector2>();
-    }
+    private Rigidbody myRB;
 
     // Start is called before the first frame update
     void Start()
     {
+        myRB = GetComponent<Rigidbody>();
         speed = baseSpeed;
     }
 
@@ -35,11 +38,15 @@ public class PlayerController : MonoBehaviour
             chargeTimer = 0;
             speed = baseSpeed;
 
-            movePlayer();
+            if (Input.GetKeyDown(charge) && stamina > 0)
+            {
+                charging = true;
+                stamina--;
+            }
         }
         else
         {
-            chargeTimer += 1;
+            chargeTimer++;
 
             if (chargeTimer >= chargeTimerGoal)
             {
@@ -48,12 +55,29 @@ public class PlayerController : MonoBehaviour
 
             speed = baseSpeed * chargeSpdMod;
         }
+
+        if (stamina != 2)
+        {
+            stamTimer++;
+
+            if (stamTimer >= stamTimerGoal)
+            {
+                stamina++;
+                stamTimer = 0f;
+            }
+        }
     }
 
-    public void movePlayer()
+    private void FixedUpdate()
     {
-        Vector3 movement = new Vector3(move.x, 0f, move.y);
+        movePlayer();
+    }
 
-        transform.Translate(movement * speed * Time.deltaTime, Space.World);
+    private void movePlayer()
+    {
+        float xInput = Input.GetAxisRaw("Horizontal");
+        float yInput = Input.GetAxisRaw("Vertical");
+
+        myRB.velocity = new Vector3(xInput * speed, myRB.velocity.y, yInput * speed);
     }
 }

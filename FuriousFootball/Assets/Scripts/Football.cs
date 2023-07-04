@@ -29,7 +29,7 @@ public class Football : MonoBehaviour
 
             if (enemyScr != null)
             {
-
+                enemyScr.currentMode = EnemyMovement.EnemyStates.HasBall;
             }
         }
 

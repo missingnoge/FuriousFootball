@@ -18,7 +18,11 @@ public class EnemyMovement : MonoBehaviour
 
     private Rigidbody myRB;
     private Vector3 dir2target;
-    private Transform target;
+    [SerializeField] private Transform target;
+    private float distance2ball;
+    private float distance2Player;
+
+    private GameObject football;
 
     public float speed = 6;
 
@@ -34,6 +38,25 @@ public class EnemyMovement : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
+        if (FindFootball())
+        {
+            distance2ball = Vector3.Distance(transform.position, football.transform.position);
+        }
+
+        if (player != null)
+        {
+            distance2Player = Vector3.Distance(transform.position, player.transform.position);
+        }
+
+        if (distance2ball > distance2Player) // Player is closer to the enemy
+        {
+            target = player.transform;
+        }
+        else // Football is closer to the enemy
+        {
+            target = football.transform;
+        }
+
         if (target.gameObject != null)
         {
             dir2target = target.position - transform.position;
@@ -41,6 +64,20 @@ public class EnemyMovement : MonoBehaviour
             dir2target *= speed;
 
             myRB.velocity = dir2target;
+        }
+    }
+
+    private bool FindFootball()
+    {
+        football = GameObject.Find("Football");
+
+        if (football != null)
+        {
+            return true;
+        }
+        else
+        {
+            return false;
         }
     }
 }
