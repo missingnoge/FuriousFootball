@@ -4,7 +4,11 @@ using UnityEngine;
 
 public class FootballScr : MonoBehaviour
 {
+    private bool canGrab = false;
     private PlayerController playerScr;
+
+    private float grabTimer = 0f;
+    private float grabTimerGoal = 60f;
 
     // Start is called before the first frame update
     void Start()
@@ -17,22 +21,39 @@ public class FootballScr : MonoBehaviour
         }
     }
 
-    private void OnTriggerEnter(Collider other)
+    private void Update()
     {
-        if (other.CompareTag("Player"))
+        if (!canGrab)
         {
-            playerScr.hasBall = true;
-        }
-        else if (other.CompareTag("Enemy"))
-        {
-            EnemyMovement enemyScr = other.gameObject.GetComponentInParent<EnemyMovement>();
-
-            if (enemyScr != null)
+            grabTimer++;
+            
+            if (grabTimer >= grabTimerGoal)
             {
-                enemyScr.currentMode = EnemyMovement.EnemyStates.HasBall;
+                grabTimer = 0f;
+                canGrab = true;
             }
         }
+    }
 
-        Destroy(gameObject);
+    private void OnTriggerEnter(Collider other)
+    {
+        if (canGrab)
+        {
+            if (other.CompareTag("Player"))
+            {
+                playerScr.hasBall = true;
+            }
+            else if (other.CompareTag("Enemy"))
+            {
+                EnemyMovement enemyScr = other.gameObject.GetComponentInParent<EnemyMovement>();
+
+                if (enemyScr != null)
+                {
+                    enemyScr.currentMode = EnemyMovement.EnemyStates.HasBall;
+                }
+            }
+
+            Destroy(gameObject);
+        }
     }
 }
