@@ -8,10 +8,11 @@ public class EnemyMovement : MonoBehaviour
     {
         GetBall,        // Run towards the ball if it exists
         HasBall,        // This enemy has the ball and will beeline for your side to touchdown
-        AttackPlayer    // This enemy does not have the ball and will instead attempt to attack the player
     }
 
-    public EnemyStates currentMode;
+    public EnemyStates currentMode = EnemyStates.GetBall;
+
+    public float health = 1f;
 
     [SerializeField]
     private GameObject player;
@@ -21,8 +22,10 @@ public class EnemyMovement : MonoBehaviour
     [SerializeField] private Transform target;
     private float distance2ball;
     private float distance2Player;
+    [SerializeField] private GameObject enemyGoal;
 
     private GameObject football;
+    [SerializeField] private GameObject fbPrefab;
 
     public float speed = 6;
 
@@ -30,6 +33,7 @@ public class EnemyMovement : MonoBehaviour
     void Start()
     {
         player = GameObject.Find("PlayerObj");
+        enemyGoal = GameObject.Find("EnemyGoal");
         myRB = GetComponent<Rigidbody>();
 
         target = player.transform;
@@ -38,7 +42,17 @@ public class EnemyMovement : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        if (FindFootball())
+        if (health <= 0)
+        {
+            if (currentMode == EnemyStates.HasBall)
+            {
+                Instantiate(fbPrefab);
+            }
+
+            Destroy(gameObject);
+        }
+
+        if (FindFootball() && football != null)
         {
             distance2ball = Vector3.Distance(transform.position, football.transform.position);
         }
@@ -48,13 +62,34 @@ public class EnemyMovement : MonoBehaviour
             distance2Player = Vector3.Distance(transform.position, player.transform.position);
         }
 
-        if (distance2ball > distance2Player) // Player is closer to the enemy
+        if (currentMode != EnemyStates.HasBall)
         {
-            target = player.transform;
+            if (distance2ball > distance2Player) // Player is closer to the enemy
+            {
+                target = player.transform;
+            }
+            else // Football is closer to the enemy
+            {
+                if (football != null)
+                {
+                    target = football.transform;
+                }
+                else if (football == null)
+                {
+                    target = player.transform;
+                }
+            }
         }
-        else // Football is closer to the enemy
+        else
         {
-            target = football.transform;
+            if (enemyGoal != null)
+            {
+                target = enemyGoal.transform;
+            }
+            else
+            {
+                Debug.Log("I can't find the goal!");
+            }
         }
 
         if (target.gameObject != null)
@@ -64,6 +99,14 @@ public class EnemyMovement : MonoBehaviour
             dir2target *= speed;
 
             myRB.velocity = dir2target;
+        }
+    }
+
+    private void OnTriggerEnter(Collider other)
+    {
+        if (other.gameObject.CompareTag("PlayerCharge"))
+        {
+            health--;
         }
     }
 

@@ -20,6 +20,7 @@ public class PlayerController : MonoBehaviour
     [SerializeField] private float chargeSpdMod = 4f;
     [SerializeField] private float chargeTimerGoal = 40f;
     private float chargeTimer = 0f;
+    [SerializeField] private GameObject chargeHitbox;
 
     private Rigidbody myRB;
 
@@ -33,6 +34,8 @@ public class PlayerController : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
+        activateChargeBox(charging);
+
         if (!charging)
         {
             chargeTimer = 0;
@@ -79,5 +82,13 @@ public class PlayerController : MonoBehaviour
         float yInput = Input.GetAxisRaw("Vertical");
 
         myRB.velocity = new Vector3(xInput * speed, myRB.velocity.y, yInput * speed);
+    }
+
+    private void activateChargeBox(bool charging)
+    {
+        if (chargeHitbox != null)
+        {
+            chargeHitbox.SetActive(charging);
+        }
     }
 }

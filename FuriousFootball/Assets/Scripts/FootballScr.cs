@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class Football : MonoBehaviour
+public class FootballScr : MonoBehaviour
 {
     private PlayerController playerScr;
 
@@ -25,7 +25,7 @@ public class Football : MonoBehaviour
         }
         else if (other.CompareTag("Enemy"))
         {
-            EnemyMovement enemyScr = other.gameObject.GetComponent<EnemyMovement>();
+            EnemyMovement enemyScr = other.gameObject.GetComponentInParent<EnemyMovement>();
 
             if (enemyScr != null)
             {

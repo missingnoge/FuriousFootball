@@ -11,10 +11,9 @@ GameObject:
   - component: {fileID: 763208790935709288}
   - component: {fileID: 763208790935709303}
   - component: {fileID: 763208790935709302}
-  - component: {fileID: 763208790935709289}
   m_Layer: 7
   m_Name: Cylinder
-  m_TagString: Untagged
+  m_TagString: Enemy
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -84,20 +83,6 @@ MeshRenderer:
   m_SortingLayer: 0
   m_SortingOrder: 0
   m_AdditionalVertexStreams: {fileID: 0}
---- !u!136 &763208790935709289
-CapsuleCollider:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 763208790935709291}
-  m_Material: {fileID: 0}
-  m_IsTrigger: 0
-  m_Enabled: 1
-  m_Radius: 0.5000001
-  m_Height: 2
-  m_Direction: 1
-  m_Center: {x: 0.000000059604645, y: 0, z: -0.00000008940697}
 --- !u!1 &763208792512317495
 GameObject:
   m_ObjectHideFlags: 0
@@ -109,9 +94,10 @@ GameObject:
   - component: {fileID: 763208792512317493}
   - component: {fileID: 763208792512317492}
   - component: {fileID: 763208792512317490}
+  - component: {fileID: 3263946605974999127}
   m_Layer: 7
   m_Name: BasicEnemyObj
-  m_TagString: Untagged
+  m_TagString: Enemy
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -146,7 +132,7 @@ Rigidbody:
   m_UseGravity: 0
   m_IsKinematic: 0
   m_Interpolate: 0
-  m_Constraints: 112
+  m_Constraints: 84
   m_CollisionDetection: 0
 --- !u!114 &763208792512317490
 MonoBehaviour:
@@ -160,5 +146,24 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f1cfd6907967e9d479edf8452f09a96c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  currentMode: 0
+  health: 1
   player: {fileID: 0}
+  target: {fileID: 0}
+  enemyGoal: {fileID: 0}
+  fbPrefab: {fileID: 6112198246522564382, guid: 85f96645affa9f14d97a04031fb9a6b9, type: 3}
   speed: 6
+--- !u!136 &3263946605974999127
+CapsuleCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 763208792512317495}
+  m_Material: {fileID: 0}
+  m_IsTrigger: 1
+  m_Enabled: 1
+  m_Radius: 0.75
+  m_Height: 3
+  m_Direction: 1
+  m_Center: {x: 0, y: 0, z: 0}
