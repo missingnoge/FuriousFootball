@@ -17,6 +17,7 @@ public class EnemyMovement : MonoBehaviour
 
     [SerializeField]
     private GameObject player;
+    private PlayerController playerScr;
 
     private Rigidbody myRB;
     private Vector3 dir2target;
@@ -40,6 +41,11 @@ public class EnemyMovement : MonoBehaviour
         enemyGoal = GameObject.Find("EnemyGoal");
         myRB = GetComponent<Rigidbody>();
 
+        if (player != null)
+        {
+            playerScr = player.GetComponent<PlayerController>();
+        }
+
         target = player.transform;
     }
 
@@ -50,8 +56,10 @@ public class EnemyMovement : MonoBehaviour
         {
             if (currentMode == EnemyStates.HasBall)
             {
-                Instantiate(fbPrefab);
+                Instantiate(fbPrefab, transform);
             }
+
+            playerScr.chargeTimer -= 0.05f;
 
             Destroy(gameObject);
         }
@@ -117,7 +125,17 @@ public class EnemyMovement : MonoBehaviour
     {
         if (other.gameObject.CompareTag("PlayerCharge"))
         {
-            health--;
+            if (hitStunCounter <= 0)
+            {
+                health--;
+            }
+
+            if (health > 0)
+            {
+                playerScr.charging = false;
+                knockbackEnemy(other.transform.position, 10f);
+                playerScr.knockbackPlayer(transform.position, 8f);
+            }
         }
     }
 

@@ -21,8 +21,8 @@ public class PlayerController : MonoBehaviour
     // Charge vars
     public bool charging = false;
     [SerializeField] private float chargeSpdMod = 4f;
-    [SerializeField] private float chargeTimerGoal = 40f;
-    private float chargeTimer = 0f;
+    [SerializeField] private float chargeTimerInit = 40f;
+    public float chargeTimer = 0f;
     [SerializeField] private GameObject chargeHitbox;
     [SerializeField] private GameObject hurtbox;
 
@@ -43,30 +43,33 @@ public class PlayerController : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        activateChargeBox(charging);
-
         if (!charging)
         {
-            chargeTimer = 0;
+            chargeHitbox.SetActive(false);
+            hurtbox.SetActive(true);
+
             speed = baseSpeed;
 
             if (Input.GetKeyDown(charge) && stamina > 0)
             {
                 charging = true;
+                chargeTimer = chargeTimerInit;
                 stamina--;
             }
         }
         else
         {
-            chargeTimer += Time.deltaTime;
-
-            if (chargeTimer >= chargeTimerGoal)
-            {
-                charging = false;
-                chargeTimer = 0;
-            }
+            chargeHitbox.SetActive(true);
+            hurtbox.SetActive(false);
 
             speed = baseSpeed * chargeSpdMod;
+
+            chargeTimer -= Time.deltaTime;
+
+            if (chargeTimer <= 0)
+            {
+                charging = false;
+            }
         }
 
         if (stamina != 2)
@@ -110,15 +113,6 @@ public class PlayerController : MonoBehaviour
         else
         {
             kbCounter -= Time.deltaTime;
-        }
-    }
-
-    private void activateChargeBox(bool charging)
-    {
-        if (chargeHitbox != null && hurtbox != null && !chargeHitbox.activeSelf)
-        {
-            chargeHitbox.SetActive(charging);
-            hurtbox.SetActive(!charging);
         }
     }
 }
