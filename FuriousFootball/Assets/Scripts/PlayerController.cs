@@ -9,18 +9,27 @@ public class PlayerController : MonoBehaviour
     public float baseSpeed;
     public float speed;
 
+    // Stamina vars
     public float stamina = 2f;
     private float stamTimer = 0f;
     public float stamTimerGoal = 360f;
 
+    // Control vars
     [SerializeField]
     private KeyCode charge = KeyCode.F;
 
+    // Charge vars
     public bool charging = false;
     [SerializeField] private float chargeSpdMod = 4f;
     [SerializeField] private float chargeTimerGoal = 40f;
     private float chargeTimer = 0f;
     [SerializeField] private GameObject chargeHitbox;
+    [SerializeField] private GameObject hurtbox;
+
+    // Knockback vars
+    public float kbForce;
+    public float kbTime = 1f;
+    private float kbCounter;
 
     private Rigidbody myRB;
 
@@ -49,11 +58,12 @@ public class PlayerController : MonoBehaviour
         }
         else
         {
-            chargeTimer++;
+            chargeTimer += Time.deltaTime;
 
             if (chargeTimer >= chargeTimerGoal)
             {
                 charging = false;
+                chargeTimer = 0;
             }
 
             speed = baseSpeed * chargeSpdMod;
@@ -61,7 +71,7 @@ public class PlayerController : MonoBehaviour
 
         if (stamina != 2)
         {
-            stamTimer++;
+            stamTimer += Time.deltaTime;
 
             if (stamTimer >= stamTimerGoal)
             {
@@ -76,19 +86,39 @@ public class PlayerController : MonoBehaviour
         movePlayer();
     }
 
+    public void knockbackPlayer(Vector3 enemyPos, float force)
+    {
+        Vector3 kbDir;
+        kbCounter = kbTime;
+        kbForce = force;
+
+        kbDir = transform.position - enemyPos;
+        kbDir.Normalize();
+        kbDir *= kbForce;
+        myRB.velocity = kbDir;
+    }
+
     private void movePlayer()
     {
-        float xInput = Input.GetAxisRaw("Horizontal");
-        float yInput = Input.GetAxisRaw("Vertical");
+        if (kbCounter <= 0)
+        {
+            float xInput = Input.GetAxisRaw("Horizontal");
+            float yInput = Input.GetAxisRaw("Vertical");
 
-        myRB.velocity = new Vector3(xInput * speed, myRB.velocity.y, yInput * speed);
+            myRB.velocity = new Vector3(xInput * speed, myRB.velocity.y, yInput * speed);
+        }
+        else
+        {
+            kbCounter -= Time.deltaTime;
+        }
     }
 
     private void activateChargeBox(bool charging)
     {
-        if (chargeHitbox != null)
+        if (chargeHitbox != null && hurtbox != null && !chargeHitbox.activeSelf)
         {
             chargeHitbox.SetActive(charging);
+            hurtbox.SetActive(!charging);
         }
     }
 }

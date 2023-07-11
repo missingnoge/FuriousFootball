@@ -8,7 +8,7 @@ public class FootballScr : MonoBehaviour
     private PlayerController playerScr;
 
     private float grabTimer = 0f;
-    private float grabTimerGoal = 60f;
+    private float grabTimerGoal = 0.5f;
 
     // Start is called before the first frame update
     void Start()
@@ -25,7 +25,7 @@ public class FootballScr : MonoBehaviour
     {
         if (!canGrab)
         {
-            grabTimer++;
+            grabTimer += Time.deltaTime;
             
             if (grabTimer >= grabTimerGoal)
             {

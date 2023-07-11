@@ -13,6 +13,7 @@ public class EnemyMovement : MonoBehaviour
     public EnemyStates currentMode = EnemyStates.GetBall;
 
     public float health = 1f;
+    public bool stunned = false;
 
     [SerializeField]
     private GameObject player;
@@ -26,6 +27,9 @@ public class EnemyMovement : MonoBehaviour
 
     private GameObject football;
     [SerializeField] private GameObject fbPrefab;
+
+    private float hitStunCounter;
+    private float hitStunTime = 0.3f;
 
     public float speed = 6;
 
@@ -52,53 +56,60 @@ public class EnemyMovement : MonoBehaviour
             Destroy(gameObject);
         }
 
-        if (FindFootball() && football != null)
+        if (hitStunCounter <= 0)
         {
-            distance2ball = Vector3.Distance(transform.position, football.transform.position);
-        }
-
-        if (player != null)
-        {
-            distance2Player = Vector3.Distance(transform.position, player.transform.position);
-        }
-
-        if (currentMode != EnemyStates.HasBall)
-        {
-            if (distance2ball > distance2Player) // Player is closer to the enemy
+            if (FindFootball() && football != null)
             {
-                target = player.transform;
+                distance2ball = Vector3.Distance(transform.position, football.transform.position);
             }
-            else // Football is closer to the enemy
+
+            if (player != null)
             {
-                if (football != null)
-                {
-                    target = football.transform;
-                }
-                else if (football == null)
+                distance2Player = Vector3.Distance(transform.position, player.transform.position);
+            }
+
+            if (currentMode != EnemyStates.HasBall)
+            {
+                if (distance2ball > distance2Player) // Player is closer to the enemy
                 {
                     target = player.transform;
                 }
+                else // Football is closer to the enemy
+                {
+                    if (football != null)
+                    {
+                        target = football.transform;
+                    }
+                    else if (football == null)
+                    {
+                        target = player.transform;
+                    }
+                }
+            }
+            else
+            {
+                if (enemyGoal != null)
+                {
+                    target = enemyGoal.transform;
+                }
+                else
+                {
+                    Debug.Log("I can't find the goal!");
+                }
+            }
+
+            if (target.gameObject != null)
+            {
+                dir2target = target.position - transform.position;
+                dir2target.Normalize();
+                dir2target *= speed;
+
+                myRB.velocity = dir2target;
             }
         }
         else
         {
-            if (enemyGoal != null)
-            {
-                target = enemyGoal.transform;
-            }
-            else
-            {
-                Debug.Log("I can't find the goal!");
-            }
-        }
-
-        if (target.gameObject != null)
-        {
-            dir2target = target.position - transform.position;
-            dir2target.Normalize();
-            dir2target *= speed;
-
-            myRB.velocity = dir2target;
+            hitStunCounter -= Time.deltaTime;
         }
     }
 
@@ -122,5 +133,16 @@ public class EnemyMovement : MonoBehaviour
         {
             return false;
         }
+    }
+
+    public void knockbackEnemy(Vector3 otherPos, float force)
+    {
+        Vector3 kbDir;
+        hitStunCounter = hitStunTime;
+
+        kbDir = transform.position - otherPos;
+        kbDir.Normalize();
+        kbDir *= force;
+        myRB.velocity = kbDir;
     }
 }
