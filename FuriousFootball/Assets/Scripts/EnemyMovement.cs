@@ -8,6 +8,7 @@ public class EnemyMovement : MonoBehaviour
     {
         GetBall,        // Run towards the ball if it exists
         HasBall,        // This enemy has the ball and will beeline for your side to touchdown
+        Cheer           // Enemy has scored and they are now cheering to taunt the player
     }
 
     public EnemyStates currentMode = EnemyStates.GetBall;

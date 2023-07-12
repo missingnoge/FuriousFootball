@@ -13,7 +13,7 @@ GameObject:
   - component: {fileID: 658401111373482833}
   m_Layer: 9
   m_Name: EnemyHitbox
-  m_TagString: Untagged
+  m_TagString: Enemy
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -160,7 +160,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!4 &763208792512317493
 Transform:
   m_ObjectHideFlags: 0
@@ -208,6 +208,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   currentMode: 0
   health: 1
+  stunned: 0
   player: {fileID: 0}
   target: {fileID: 0}
   enemyGoal: {fileID: 0}

@@ -4,32 +4,27 @@ using UnityEngine;
 
 public class FootballScr : MonoBehaviour
 {
-    private bool canGrab = false;
-    private PlayerController playerScr;
+    [SerializeField] private bool canGrab = false;
 
     private float grabTimer = 0f;
-    private float grabTimerGoal = 0.5f;
+    private float grabTimerInit = 0.75f;
 
-    // Start is called before the first frame update
-    void Start()
+    private void Start()
     {
-        GameObject player = GameObject.Find("PlayerObj");
-
-        if (player != null)
-        {
-            playerScr = player.GetComponent<PlayerController>();
-        }
+       if (!canGrab)
+       {
+            grabTimer = grabTimerInit;
+       }
     }
 
     private void Update()
     {
         if (!canGrab)
         {
-            grabTimer += Time.deltaTime;
+            grabTimer -= Time.deltaTime;
             
-            if (grabTimer >= grabTimerGoal)
+            if (grabTimer <= 0)
             {
-                grabTimer = 0f;
                 canGrab = true;
             }
         }
@@ -39,11 +34,16 @@ public class FootballScr : MonoBehaviour
     {
         if (canGrab)
         {
-            if (other.CompareTag("Player"))
+            if (other.gameObject.CompareTag("Player") || other.gameObject.CompareTag("PlayerHurtbox"))
             {
-                playerScr.hasBall = true;
+                PlayerController playerScr = other.gameObject.GetComponentInParent<PlayerController>();
+
+                if (playerScr != null)
+                {
+                    playerScr.hasBall = true;
+                }
             }
-            else if (other.CompareTag("Enemy"))
+            else if (other.gameObject.CompareTag("Enemy"))
             {
                 EnemyMovement enemyScr = other.gameObject.GetComponentInParent<EnemyMovement>();
 
