@@ -59,6 +59,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ff6fd3aa7022ad34db1f182664124fac, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  fbPrefab: {fileID: 6112198246522564382, guid: 85f96645affa9f14d97a04031fb9a6b9, type: 3}
 --- !u!1 &763208790935709291
 GameObject:
   m_ObjectHideFlags: 0
@@ -70,6 +71,7 @@ GameObject:
   - component: {fileID: 763208790935709288}
   - component: {fileID: 763208790935709303}
   - component: {fileID: 763208790935709302}
+  - component: {fileID: 8370906909447213355}
   m_Layer: 7
   m_Name: Cylinder
   m_TagString: Enemy
@@ -142,6 +144,20 @@ MeshRenderer:
   m_SortingLayer: 0
   m_SortingOrder: 0
   m_AdditionalVertexStreams: {fileID: 0}
+--- !u!136 &8370906909447213355
+CapsuleCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 763208790935709291}
+  m_Material: {fileID: 0}
+  m_IsTrigger: 0
+  m_Enabled: 1
+  m_Radius: 0.65
+  m_Height: 2.72
+  m_Direction: 1
+  m_Center: {x: 0, y: 0.33, z: 0}
 --- !u!1 &763208792512317495
 GameObject:
   m_ObjectHideFlags: 0
@@ -160,7 +176,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!4 &763208792512317493
 Transform:
   m_ObjectHideFlags: 0
@@ -210,10 +226,11 @@ MonoBehaviour:
   health: 1
   stunned: 0
   player: {fileID: 0}
+  speed: 6
   target: {fileID: 0}
   enemyGoal: {fileID: 0}
+  football: {fileID: 0}
   fbPrefab: {fileID: 6112198246522564382, guid: 85f96645affa9f14d97a04031fb9a6b9, type: 3}
-  speed: 6
 --- !u!136 &3263946605974999127
 CapsuleCollider:
   m_ObjectHideFlags: 0

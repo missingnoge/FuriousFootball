@@ -6,6 +6,10 @@ public class PlayerController : MonoBehaviour
 {
     public bool hasBall = false;
 
+    // Save the position for resetting after someone scores
+    private Vector3 initialPos;
+
+    // Speed vars
     public float baseSpeed;
     public float speed;
 
@@ -36,6 +40,8 @@ public class PlayerController : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
+        initialPos = transform.position;
+
         myRB = GetComponent<Rigidbody>();
         speed = baseSpeed;
     }

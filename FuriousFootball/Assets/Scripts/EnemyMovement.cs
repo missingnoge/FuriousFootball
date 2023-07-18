@@ -4,6 +4,7 @@ using UnityEngine;
 
 public class EnemyMovement : MonoBehaviour
 {
+    // State Machine
     public enum EnemyStates
     {
         GetBall,        // Run towards the ball if it exists
@@ -13,13 +14,18 @@ public class EnemyMovement : MonoBehaviour
 
     public EnemyStates currentMode = EnemyStates.GetBall;
 
+    // Health vars
     public float health = 1f;
     public bool stunned = false;
 
+    // Player vars
     [SerializeField]
     private GameObject player;
     private PlayerController playerScr;
+    [SerializeField] private bool prioritizesBall = false;
 
+    // Movement vars
+    public float speed = 6;
     private Rigidbody myRB;
     private Vector3 dir2target;
     [SerializeField] private Transform target;
@@ -27,17 +33,28 @@ public class EnemyMovement : MonoBehaviour
     private float distance2Player;
     [SerializeField] private GameObject enemyGoal;
 
+    // Football vars
+    [SerializeField]
     private GameObject football;
     [SerializeField] private GameObject fbPrefab;
+    private float fbDropRange = 5f;
 
+    // Timer vars
     private float hitStunCounter;
     private float hitStunTime = 0.3f;
+    private float reactionCounter = 0f;
+    private float reactionTime;
 
-    public float speed = 6;
+    // Save the position for when the game resets after touchdown
+    private Vector3 initialPos;
 
     // Start is called before the first frame update
     void Start()
     {
+        resetReactionTime();
+
+        initialPos = transform.position;
+
         player = GameObject.Find("PlayerObj");
         enemyGoal = GameObject.Find("EnemyGoal");
         myRB = GetComponent<Rigidbody>();
@@ -53,11 +70,24 @@ public class EnemyMovement : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
+        reactionCounter += Time.deltaTime;
+
+        if (reactionCounter >= reactionTime)
+        {
+            FindFootball();
+
+            resetReactionTime();
+        }
+
         if (health <= 0)
         {
+            GameObject fb;
+
             if (currentMode == EnemyStates.HasBall)
             {
-                Instantiate(fbPrefab, transform);
+                fb = Instantiate(fbPrefab, new Vector3(transform.position.x + Random.Range(-fbDropRange, fbDropRange), 0.64f,
+                                transform.position.z + Random.Range(-fbDropRange, fbDropRange)), fbPrefab.transform.rotation);
+                fb.name = "Football";
             }
 
             playerScr.chargeTimer -= 0.05f;
@@ -79,20 +109,25 @@ public class EnemyMovement : MonoBehaviour
 
             if (currentMode != EnemyStates.HasBall)
             {
-                if (distance2ball > distance2Player) // Player is closer to the enemy
+                if ((prioritizesBall) || (!prioritizesBall && reactionCounter >= reactionTime))
                 {
-                    target = player.transform;
-                }
-                else // Football is closer to the enemy
-                {
-                    if (football != null)
-                    {
-                        target = football.transform;
-                    }
-                    else if (football == null)
+                    if (distance2ball > distance2Player) // Player is closer to the enemy
                     {
                         target = player.transform;
                     }
+                    else // Football is closer to the enemy
+                    {
+                        if (football != null)
+                        {
+                            target = football.transform;
+                        }
+                        else if (football == null) // Football doesn't exist; fall back on Player
+                        {
+                            target = player.transform;
+                        }
+                    }
+
+                    resetReactionTime();
                 }
             }
             else
@@ -163,5 +198,11 @@ public class EnemyMovement : MonoBehaviour
         kbDir.Normalize();
         kbDir *= force;
         myRB.velocity = kbDir;
+    }
+
+    private void resetReactionTime()
+    {
+        reactionCounter = 0f;
+        reactionTime = Random.Range(1f, 4f);
     }
 }

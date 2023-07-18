@@ -652,10 +652,6 @@ PrefabInstance:
       propertyPath: m_Name
       value: EnemyObj (2)
       objectReference: {fileID: 0}
-    - target: {fileID: 763208792512317495, guid: a1e5f6acd8d38d8499746bd6b5156122, type: 3}
-      propertyPath: m_IsActive
-      value: 1
-      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: a1e5f6acd8d38d8499746bd6b5156122, type: 3}
 --- !u!1001 &2049117819
@@ -774,10 +770,6 @@ PrefabInstance:
       propertyPath: m_Name
       value: EnemyObj
       objectReference: {fileID: 0}
-    - target: {fileID: 763208792512317495, guid: a1e5f6acd8d38d8499746bd6b5156122, type: 3}
-      propertyPath: m_IsActive
-      value: 1
-      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: a1e5f6acd8d38d8499746bd6b5156122, type: 3}
 --- !u!1001 &4501846829438608542
@@ -835,6 +827,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: PlayerObj
       objectReference: {fileID: 0}
+    - target: {fileID: 4501846827649591817, guid: 814e5db84b233764a9e8114a2937adac, type: 3}
+      propertyPath: m_IsActive
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 4501846828008111123, guid: 814e5db84b233764a9e8114a2937adac, type: 3}
       propertyPath: m_TagString
       value: Player
@@ -862,7 +858,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 6112198246522564354, guid: 85f96645affa9f14d97a04031fb9a6b9, type: 3}
       propertyPath: m_LocalPosition.z
-      value: -9.06
+      value: -13.26
       objectReference: {fileID: 0}
     - target: {fileID: 6112198246522564354, guid: 85f96645affa9f14d97a04031fb9a6b9, type: 3}
       propertyPath: m_LocalRotation.w
