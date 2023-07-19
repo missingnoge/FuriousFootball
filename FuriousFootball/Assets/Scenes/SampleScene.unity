@@ -419,6 +419,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   mode: 1
+  enem_initialPos: []
+  fbPrefab: {fileID: 6112198246522564382, guid: 85f96645affa9f14d97a04031fb9a6b9, type: 3}
+  enemyPrefab: {fileID: 763208792512317495, guid: a1e5f6acd8d38d8499746bd6b5156122, type: 3}
 --- !u!1 &963194225
 GameObject:
   m_ObjectHideFlags: 0
@@ -597,6 +600,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   mode: 0
+  enem_initialPos: []
+  fbPrefab: {fileID: 6112198246522564382, guid: 85f96645affa9f14d97a04031fb9a6b9, type: 3}
+  enemyPrefab: {fileID: 763208792512317495, guid: a1e5f6acd8d38d8499746bd6b5156122, type: 3}
 --- !u!1001 &1537808270
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -604,6 +610,10 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 763208792512317490, guid: a1e5f6acd8d38d8499746bd6b5156122, type: 3}
+      propertyPath: prioritizesBall
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 763208792512317493, guid: a1e5f6acd8d38d8499746bd6b5156122, type: 3}
       propertyPath: m_RootOrder
       value: 6
@@ -651,6 +661,10 @@ PrefabInstance:
     - target: {fileID: 763208792512317495, guid: a1e5f6acd8d38d8499746bd6b5156122, type: 3}
       propertyPath: m_Name
       value: EnemyObj (2)
+      objectReference: {fileID: 0}
+    - target: {fileID: 763208792512317495, guid: a1e5f6acd8d38d8499746bd6b5156122, type: 3}
+      propertyPath: m_IsActive
+      value: 1
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: a1e5f6acd8d38d8499746bd6b5156122, type: 3}
@@ -722,6 +736,10 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 763208792512317490, guid: a1e5f6acd8d38d8499746bd6b5156122, type: 3}
+      propertyPath: health
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 763208792512317493, guid: a1e5f6acd8d38d8499746bd6b5156122, type: 3}
       propertyPath: m_RootOrder
       value: 4
@@ -858,7 +876,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 6112198246522564354, guid: 85f96645affa9f14d97a04031fb9a6b9, type: 3}
       propertyPath: m_LocalPosition.z
-      value: -13.26
+      value: -9.5
       objectReference: {fileID: 0}
     - target: {fileID: 6112198246522564354, guid: 85f96645affa9f14d97a04031fb9a6b9, type: 3}
       propertyPath: m_LocalRotation.w

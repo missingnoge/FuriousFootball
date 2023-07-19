@@ -45,15 +45,10 @@ public class EnemyMovement : MonoBehaviour
     private float reactionCounter = 0f;
     private float reactionTime;
 
-    // Save the position for when the game resets after touchdown
-    private Vector3 initialPos;
-
     // Start is called before the first frame update
     void Start()
     {
         resetReactionTime();
-
-        initialPos = transform.position;
 
         player = GameObject.Find("PlayerObj");
         enemyGoal = GameObject.Find("EnemyGoal");

@@ -18,9 +18,41 @@ public class Goal : MonoBehaviour
     private float resetCounter = 0f;
     private float resetTime = 1.5f;
 
+    private GameObject[] enemies;
+    [SerializeField]  private Vector3[] enem_initialPos;
+
+    private GameObject player;
+    private Vector3 plyr_initialPos;
+
+    private GameObject football;
+    private Vector3 fb_initialPos;
+
+    [SerializeField] private GameObject fbPrefab;
+    [SerializeField] private GameObject enemyPrefab;
+
     private void Start()
     {
         GameObject scoreManagerObj = GameObject.Find("ScoreManager");
+
+        enemies = GameObject.FindGameObjectsWithTag("Enemy");
+        player = GameObject.Find("PlayerObj");
+        football = GameObject.Find("Football");
+
+        enem_initialPos = new Vector3[enemies.Length];
+        for (int i = 0; i < enemies.Length; i++)
+        {
+            enem_initialPos[i] = enemies[i].transform.position;
+        }
+
+        if (player != null)
+        {
+            plyr_initialPos = player.transform.position;
+        }
+
+        if (football != null)
+        {
+            fb_initialPos = football.transform.position;
+        }
 
         if (scoreManagerObj != null)
         {
@@ -36,7 +68,8 @@ public class Goal : MonoBehaviour
 
             if (resetCounter <= 0)
             {
-                SceneManager.LoadScene("SampleScene");
+                ResetStage();
+                countingDown = false;
             }
         }
     }
@@ -83,5 +116,35 @@ public class Goal : MonoBehaviour
     {
         countingDown = true;
         resetCounter = resetTime;
+    }
+
+    private void ResetStage()
+    {
+        for (int i = 0; i < GameObject.FindGameObjectsWithTag("Enemy").Length; i++)
+        {
+            Destroy(GameObject.FindGameObjectsWithTag("Enemy")[i]);
+        }    
+
+        for (int o = 0; o < enem_initialPos.Length; o++)
+        {
+            Instantiate(enemyPrefab, enem_initialPos[o], enemyPrefab.transform.rotation);
+        }
+
+        player.transform.position = plyr_initialPos;
+        Instantiate(fbPrefab, fb_initialPos, fbPrefab.transform.rotation);
+    }
+
+    private bool isAChild(GameObject obj)
+    {
+        var me = transform;
+        var t = obj.transform;
+
+        while(t != null)
+        {
+            if (t == me) return true;
+            t = t.parent;
+        }
+
+        return false;
     }
 }
