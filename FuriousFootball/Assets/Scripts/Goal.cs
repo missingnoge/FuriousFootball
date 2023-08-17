@@ -17,6 +17,7 @@ public class Goal : MonoBehaviour
     private bool countingDown = false;
     private float resetCounter = 0f;
     private float resetTime = 1.5f;
+    private bool entered = false;
 
     private GameObject[] enemies;
     [SerializeField]  private Vector3[] enem_initialPos;
@@ -76,36 +77,41 @@ public class Goal : MonoBehaviour
 
     private void OnTriggerEnter(Collider other)
     {
-        if (mode == GoalMode.playerGoal)
+        if (!entered)
         {
-            if (other.gameObject.CompareTag("Player") || other.gameObject.CompareTag("PlayerHurtbox"))
+            if (mode == GoalMode.playerGoal)
             {
-                PlayerController playerScr = other.gameObject.GetComponentInParent<PlayerController>();
-
-                if (playerScr != null)
+                if (other.gameObject.CompareTag("Player") || other.gameObject.CompareTag("PlayerHurtbox"))
                 {
-                    if (playerScr.hasBall)
+                    PlayerController playerScr = other.gameObject.GetComponentInParent<PlayerController>();
+
+                    if (playerScr != null)
                     {
-                        scoreScr.playerScore++;
-                        startResetCount();
-                        Debug.Log("Player has scored!!!");
+                        if (playerScr.hasBall)
+                        {
+                            scoreScr.playerScore++;
+                            startResetCount();
+                            Debug.Log("Player has scored!!!");
+                            entered = true;
+                        }
                     }
                 }
             }
-        }
-        else if (mode == GoalMode.enemyGoal)
-        {
-            if (other.gameObject.CompareTag("Enemy"))
+            else if (mode == GoalMode.enemyGoal)
             {
-                EnemyMovement enemyScr = other.gameObject.GetComponent<EnemyMovement>();
-
-                if (enemyScr != null)
+                if (other.gameObject.CompareTag("Enemy"))
                 {
-                    if (enemyScr.currentMode == EnemyMovement.EnemyStates.HasBall)
+                    EnemyMovement enemyScr = other.gameObject.GetComponent<EnemyMovement>();
+
+                    if (enemyScr != null)
                     {
-                        scoreScr.enemyScore++;
-                        startResetCount();
-                        Debug.Log("Enemy has scored!!!");
+                        if (enemyScr.currentMode == EnemyMovement.EnemyStates.HasBall)
+                        {
+                            scoreScr.enemyScore++;
+                            startResetCount();
+                            Debug.Log("Enemy has scored!!!");
+                            entered = true;
+                        }
                     }
                 }
             }
@@ -132,6 +138,8 @@ public class Goal : MonoBehaviour
 
         player.transform.position = plyr_initialPos;
         Instantiate(fbPrefab, fb_initialPos, fbPrefab.transform.rotation);
+
+        entered = false;
     }
 
     private bool isAChild(GameObject obj)
