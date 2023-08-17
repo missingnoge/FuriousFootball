@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 using TMPro;
 
 public class ScoreUI : MonoBehaviour
@@ -15,6 +16,7 @@ public class ScoreUI : MonoBehaviour
     void Start()
     {
         scoreManager = GameObject.Find("ScoreManager");
+        scoreVal = GetComponent<TextMeshProUGUI>();
     }
 
     // Update is called once per frame
@@ -24,13 +26,16 @@ public class ScoreUI : MonoBehaviour
         {
             managerScr = scoreManager.GetComponent<ScoreManager>();
 
-            if (!useEnemyScore)
+            if (managerScr != null)
             {
-                scoreVal.text = managerScr.playerScore.ToString();
-            }
-            else
-            {
-                scoreVal.text = managerScr.enemyScore.ToString();
+                if (!useEnemyScore)
+                {
+                    scoreVal.text = managerScr.playerScore.ToString();
+                }
+                else
+                {
+                    scoreVal.text = managerScr.enemyScore.ToString();
+                }
             }
         }
     }
