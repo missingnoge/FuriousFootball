@@ -28,6 +28,9 @@ public class Goal : MonoBehaviour
     private GameObject football;
     private Vector3 fb_initialPos;
 
+    private GameObject formManager;
+    private FormationManager formManScr;
+
     [SerializeField] private GameObject fbPrefab;
     [SerializeField] private GameObject enemyPrefab;
 
@@ -38,6 +41,7 @@ public class Goal : MonoBehaviour
         enemies = GameObject.FindGameObjectsWithTag("Enemy");
         player = GameObject.Find("PlayerObj");
         football = GameObject.Find("Football");
+        formManager = GameObject.Find("FormationManager");
 
         enem_initialPos = new Vector3[enemies.Length];
         for (int i = 0; i < enemies.Length; i++)
@@ -58,6 +62,11 @@ public class Goal : MonoBehaviour
         if (scoreManagerObj != null)
         {
             scoreScr = scoreManagerObj.GetComponent<ScoreManager>();
+        }
+
+        if (formManager != null)
+        {
+            formManScr = formManager.GetComponent<FormationManager>();
         }
     }
 
